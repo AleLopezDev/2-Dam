@@ -21,7 +21,7 @@ public class Ej02 {
 			File f2 = new File(f.getAbsolutePath(),i);
 			
 			if(f2.isDirectory()) {
-				listarDirectorios(f2);
+				listarDirectoriosRecursividad(f2);
 			}
 			
 		}

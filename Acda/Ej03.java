@@ -13,33 +13,19 @@ public class Ej03 {
 		// sinRecursividad(f);
 
 		// conRecursividad(f);
-		listDir(f);
+		deleteDirectory(f);
 
-	}
-
-	public static void listDir(File dir) {
-
-		File elements[] = dir.listFiles();
-
-		for (File element : elements) {
-			if (element.isFile() && !element.equals(".") && !element.equals("..")) {
-				System.out.println(element);
-			} else if (element.isDirectory()) {
-				listDir(element.getAbsoluteFile());
-			}
-
-		}
 	}
 
 	public static void conRecursividad(File f) {
 
 		System.out.println(f.getName());
-		// if (f.isDirectory()) {
+
 		File[] entries = f.listFiles();
 		if (entries != null) {
 
 			for (File i : entries) {
-				// System.out.println( i);
+
 				System.out.println("Archivo borrado " + i.getName());
 				i.delete();
 				conRecursividad(i);
@@ -48,14 +34,29 @@ public class Ej03 {
 
 			f.delete();
 		}
-		// }
 
+	}
+
+	static public void deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					deleteDirectory(files[i]);
+				} else {
+					files[i].delete();
+				}
+			}
+		}
 	}
 
 	public static void sinRecursividad(File f) {
 
-		File[] numero = f.listFiles();
-		System.out.println(numero.length);
+		File[] archivos = f.listFiles();
+
+		for (File x : archivos) {
+
+		}
 
 	}
 
