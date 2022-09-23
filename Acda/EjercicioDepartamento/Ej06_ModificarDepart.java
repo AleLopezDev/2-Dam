@@ -1,3 +1,5 @@
+package ejerciciosdepartamento;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 
 public class Ej06_ModificarDepart {
 
-	static DepartamentoS d;
+	static Departamento d;
 
 	public static void main(String[] args) throws IOException, Exception {
 
@@ -20,7 +22,7 @@ public class Ej06_ModificarDepart {
 		File f = new File("C:\\Users\\usuario\\Desktop\\AcdaFicheros\\Departamentos.dat");
 
 		// lectura
-		
+
 		FileInputStream fr = new FileInputStream(f);
 		ObjectInputStream archivoLectura = new ObjectInputStream(fr);
 
@@ -33,18 +35,28 @@ public class Ej06_ModificarDepart {
 
 		try {
 			while (true) {
-				d = (DepartamentoS) archivoLectura.readObject(); // Lee un departamento del fichero principal
+				d = (Departamento) archivoLectura.readObject(); // Lee un departamento del fichero principal
+
 				if (d.getNum() == id) {
-					d.setNombre("nuevoNombre");
-					d.setLoc("NuevaLoc");
-					escribir.writeObject(d);
-				} else {
-					escribir.writeObject(d);
+
+					System.out.println("Introduce el nombre nuevo: ");
+					String n = sc.next();
+					d.setNombre(n);
+
+					System.out.println("Introduce la localizacion nueva: ");
+					String loc = sc.next();
+					d.setLoc(loc);
+
 				}
+				escribir.writeObject(d);
 
 			}
 		} catch (EOFException e) {
+
 		}
+
+		archivoLectura.close();
+		escribir.close();
 		renombrar();
 	}
 
@@ -61,10 +73,15 @@ public class Ej06_ModificarDepart {
 
 		try {
 			while (true) {
-				d = (DepartamentoS) archivoLectura.readObject(); // Lee un departamento
-				escribir.writeObject(d); //Escribe el departamento
+				d = (Departamento) archivoLectura.readObject(); // Lee un departamento
+				escribir.writeObject(d); // Escribe el departamento
 			}
 		} catch (EOFException e) {
 		}
+
+		archivoLectura.close();
+		escribir.close();
+
+		f.delete(); // Borramos el archivo temporal
 	}
 }
