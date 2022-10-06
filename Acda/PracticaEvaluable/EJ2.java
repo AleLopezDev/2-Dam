@@ -51,20 +51,23 @@ public class EJ2 {
 				if (linea.contains("Purchasing")) {
 
 					escribir.write(linea.replace("Purchasing", "Investor"));
-				}else {
+				} else {
 					escribir.write(linea);
 				}
 				escribir.newLine();
 
 			}
-
-			if(!f1.delete()) {
-				System.out.println("fallo al renombrar");
-			}
-			if(!f2.renameTo(f1)) {
-				System.out.println("fallo al renombrar");
-			}
 			
+			
+			// Arreglar, no funciona en mi windows
+
+			if (!f1.delete()) {
+				System.out.println("fallo al renombrar");
+			}
+			if (!f2.renameTo(f1)) {
+				System.out.println("fallo al renombrar");
+			}
+
 			leer.close();
 			escribir.close();
 

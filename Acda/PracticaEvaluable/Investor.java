@@ -11,6 +11,7 @@ public class Investor implements Serializable {
 	public Investor(int codigo, char company, String name, String surname, String calidad, String type) {
 
 		this.codigo = codigo;
+		this.company = company;
 		this.name = name;
 		this.surname = surname;
 		this.calidad = calidad;
@@ -18,8 +19,52 @@ public class Investor implements Serializable {
 
 	}
 
-	public Investor() {
+	public int getCodigo() {
+		return codigo;
+	}
 
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+	public char getCompany() {
+		return company;
+	}
+
+	public void setCompany(char company) {
+		this.company = company;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getCalidad() {
+		return calidad;
+	}
+
+	public void setCalidad(String calidad) {
+		this.calidad = calidad;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
