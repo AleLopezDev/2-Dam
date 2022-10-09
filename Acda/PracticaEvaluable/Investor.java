@@ -2,6 +2,11 @@ package peval1acda2223;
 
 import java.io.Serializable;
 
+/**
+ * @version 1.0
+ * @author Alejandro Lopez Aguilar
+ */
+
 public class Investor implements Serializable {
 
 	private int codigo;
