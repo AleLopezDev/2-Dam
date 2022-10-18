@@ -1,0 +1,11 @@
+Controlar cuando mete muchos numeros o cuando presionas enter nada mas que aparezca el menu
+
+poner variables del menu, dentro del main
+
+Errores en rojo
+
+usar el overflow exception pa que no se peta tanto cuando meto muchos numeros
+
+si multiplica muchisimos numeros que te aparezca una tecla para continuar a la siguiente pantalla
+
+poner double en las opciones
