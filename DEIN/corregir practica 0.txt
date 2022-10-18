@@ -4,3 +4,4 @@ usar el overflow exception pa que no se peta tanto cuando meto muchos numeros
 
 si multiplica muchisimos numeros que te aparezca una tecla para continuar a la siguiente pantalla
 
+tildes
