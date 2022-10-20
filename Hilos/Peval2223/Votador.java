@@ -1,4 +1,3 @@
-package peval2223;
 
 public class Votador extends Thread {
 
@@ -11,7 +10,20 @@ public class Votador extends Thread {
 	@Override
 	public void run() {
 
-		t.votar(this.getName());
+		t.entrarEnCola(this.getName());
+
+		t.checkearCenso(this.getName());
+
+		//t.respetarCola(this.getName());
+
+		try {
+			sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//t.votar(this.getName());
 
 	}
 }

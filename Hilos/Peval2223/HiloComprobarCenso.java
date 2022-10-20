@@ -1,4 +1,4 @@
-package peval2223;
+
 
 public class HiloComprobarCenso extends Thread {
 

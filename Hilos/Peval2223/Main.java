@@ -1,4 +1,3 @@
-package peval2223;
 
 import java.util.Arrays;
 
@@ -8,8 +7,6 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		rellenarArray();
-
 		for (int i = 1; i <= 30; i++) {
 			Votador v = new Votador(t);
 			v.setName(Integer.toString(i));
@@ -18,15 +15,6 @@ public class Main {
 
 	}
 
-	public static void rellenarArray() {
 
-		for (int i = 1; i <= 30; i++) {
-
-			if (!Arrays.asList(t.getNumeroNoAñadidos()).contains(i)) {
-				t.getListaCenso().add(Integer.toString(i));
-			}
-		}
-
-	}
 
 }

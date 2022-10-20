@@ -1,53 +1,66 @@
-package peval2223;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tuberia {
 
-	private static Integer[] numeroNoAñadidos = { 5, 7, 9, 12, 16, 17, 21, 25, 26, 27 };
-	private static ArrayList<String> listaCenso = new ArrayList<>();
+	int x = 0, i = 0;
+	private Integer[] listaDnis = { 1, 2, 3, 4, 6, 8, 10, 11, 13, 14, 15, 18, 19, 20, 22, 23, 24, 28, 29, 30 };
+	private ArrayList<Integer> colaCenso = new ArrayList<>();
+	private ArrayList<Integer> colaVotar = new ArrayList<>();
 
-	boolean estanEnCenso = false;
+	public void entrarEnCola(String name) {
 
-	public void votar(String nombre) {
+		if (Arrays.asList(listaDnis).contains(Integer.parseInt(name))) {
+			System.out.println("Votador " + name + " ha entrado a la cola");
+			colaCenso.add(Integer.parseInt(name));
+		}
 
-		// System.out.println("Ha llegado el votador " + nombre);
-		//checkearCenso(nombre);
+	}
+
+	public synchronized void checkearCenso(String nombre) {
+
+
+
+			if (Arrays.asList(listaDnis).contains(Integer.parseInt(nombre))) {
+
+				while (colaCenso.get(x) != Integer.parseInt(nombre)) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				x++;
+				notifyAll();
+				System.out.println(nombre + " ha checkeado el censo");
+			}
 		
-		// mostrarArray();
-
-		// System.out.println("Esta checkeando si esta en el censo ");
 
 	}
 
-	public void checkearCenso(String nombre) {
+	public synchronized void votar(String nombre) {
 
-		System.out.println("El nombre es " + nombre);
+	}
 
-		if (Arrays.asList(listaCenso).contains(nombre)) {
-			System.out.println("El votador " + nombre + " esta en el censo ");
+	public void imprimirCola() {
+
+		if (colaCenso.size() == 0) {
+			for (int i : colaCenso) {
+				System.out.println(i);
+			}
 		}
-		System.out.println("No esta");
+	}
+
+	public void respetarCola(String name) {
 
 	}
 
-	public Integer[] getNumeroNoAñadidos() {
-		return numeroNoAñadidos;
-	}
+	public synchronized void realizarVoto(String nombre) {
 
-	public static ArrayList<String> getListaCenso() {
-		return listaCenso;
-	}
+		System.out.println("El votador " + nombre + " ha votado");
 
-	public boolean isEstanEnCenso() {
-		return estanEnCenso;
-	}
-
-	public void mostrarArray() {
-		for (String i : listaCenso) {
-			System.out.println(i);
-		}
 	}
 
 }
