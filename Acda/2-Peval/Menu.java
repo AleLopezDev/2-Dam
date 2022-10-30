@@ -1,4 +1,3 @@
-package peval2223sql;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -7,11 +6,10 @@ public class Menu {
 
 	private static int opcion = 0;
 	private static Scanner sc = new Scanner(System.in);
-	
+
 	private static Tareas t = new Tareas();
 	private static Ej2 ej2 = new Ej2();
-	
-	
+
 	public static void main(String[] args) {
 
 		while (opcion != 99) {
@@ -36,6 +34,7 @@ public class Menu {
 				ej2.insertarPartidos();
 				break;
 			case 3:
+				t.mostrarDatosJugadores();
 				break;
 			case 4:
 				break;
