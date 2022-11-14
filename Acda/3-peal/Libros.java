@@ -1,4 +1,3 @@
-
 public class Libros {
 
 	private int codigo, numeroPaginas, year;

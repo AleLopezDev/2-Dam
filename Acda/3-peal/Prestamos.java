@@ -1,4 +1,3 @@
-
 public class Prestamos {
 
 	int numeroPedido;
@@ -15,5 +14,16 @@ public class Prestamos {
 		this.fechaMaxDevolucion = fechaMaxDevolucion;
 		this.fechaDevolucion = fechaDevolucion;
 	}
+
+	public int getNumeroPedido() {
+		return numeroPedido;
+	}
+
+	public String getFechaDevolucion() {
+		return fechaDevolucion;
+	}
+	
+	
+	
 
 }

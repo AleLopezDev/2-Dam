@@ -1,9 +1,8 @@
-
 public class Usuario {
 
 	private int codigoUsuario;
 	private String nombre, apellidos, dni, domicilio, poblacion, provincia, fechaNacimiento;
-	
+
 	public Usuario(int codigoUsuario, String nombre, String apellidos, String dni, String domicilio, String poblacion,
 			String provincia, String fechaNacimiento) {
 		this.codigoUsuario = codigoUsuario;
@@ -15,7 +14,5 @@ public class Usuario {
 		this.provincia = provincia;
 		this.fechaNacimiento = fechaNacimiento;
 	}
-
-
 
 }

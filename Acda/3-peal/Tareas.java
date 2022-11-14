@@ -3,6 +3,8 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.neodatis.odb.ODB;
@@ -10,7 +12,6 @@ import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.ObjectValues;
 import org.neodatis.odb.Objects;
 import org.neodatis.odb.Values;
-import org.neodatis.odb.core.query.IQuery;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 import org.neodatis.odb.impl.core.query.values.ValuesCriteriaQuery;
@@ -37,7 +38,7 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
 		if (f.exists()) {
 			f.delete();
 		}
@@ -102,7 +103,7 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
 
 		ODB odb = ODBFactory.open(f.getAbsolutePath());
 
@@ -152,34 +153,100 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
 		ODB odb = ODBFactory.open(f.getAbsolutePath());
 
 		System.out.println("Introduce el nombre a borrar");
-		String name = sc.next();
+		String name = sc.nextLine();
 
-		System.out.println(name);
+		CriteriaQuery comprobarNombre = new CriteriaQuery(Usuario.class, Where.equal("nombre", name));
+		Objects<Usuario> nombre = odb.getObjects(comprobarNombre);
 
-		// Borramos primero el prestamo para despues poder borrar el usuario
-		CriteriaQuery borradoPrestamo = new CriteriaQuery(Prestamos.class, Where.equal("Usuario.nombre", "Jose"));
-		Objects<Prestamos> prestamos = (Objects<Prestamos>) odb.getObjects(borradoPrestamo).getFirst();
-		if(prestamos.hasNext()) {
-			System.out.println("Existe");
-		}else {
-			System.out.println("No esxa");
-		}
+		// Si existe
+		if (nombre.hasNext()) {
+			// Borramos primero el prestamo para despues poder borrar el usuario
+			CriteriaQuery borradoPrestamo = new CriteriaQuery(Prestamos.class, Where.equal("Usuario.nombre", name));
+			Objects<Prestamos> listaPrestamos = odb.getObjects(borradoPrestamo);
+			while (listaPrestamos.hasNext()) {
+				Prestamos p = listaPrestamos.next();
+				//p = (Prestamos) odb.getObjects(borradoPrestamo).getFirst();
+				odb.delete(p);
+			}
 
-		CriteriaQuery borrado = new CriteriaQuery(Usuario.class, Where.equal("nombre", "Jose"));
-		Objects<Usuario> usuario = odb.getObjects(borrado);
+			// Borramos los usuarios
+			CriteriaQuery borrado = new CriteriaQuery(Usuario.class, Where.equal("nombre", name));
+			Objects<Usuario> listaUsuarios = odb.getObjects(borrado);
+			while (listaUsuarios.hasNext()) {
+				Usuario u = listaUsuarios.next();
+				//u = (Usuario) odb.getObjects(borrado).getFirst();
+				odb.delete(u);
+			}
 
-		if (usuario.hasNext()) {
-			Usuario u = (Usuario) odb.getObjects(borrado).getFirst();
-			odb.delete(u);
+			System.out.println("Usuario y sus prestamos borrados con éxito\n");
+
 		} else {
-			System.out.println("No existe");
+			System.out.println("No existe\n");
 		}
 
 		odb.close();
+	}
+
+	public void modificarPrestamo() {
+
+		// Creamos una lista de opciones para comprobar que existe la opción que elige
+		// el usuario abajo
+		ArrayList<Integer> listaOpciones = new ArrayList<>();
+		listaOpciones.clear();
+		int opcion;
+
+		// Al usar linux, pido la ruta donde quiere ser introducido el archivo
+		System.out.println("Introduce la ruta donde se encuentra bibliotecas.neo");
+		String ruta = sc.nextLine();
+
+		// Archivo donde se va guardar la biblioteca.neo
+		// File f = new File(ruta + File.separator + "biblioteca.neo");
+		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
+		ODB odb = ODBFactory.open(f.getAbsolutePath());
+
+		System.out.print("Introduce el nombre del usuario, para modificar su prestamo: ");
+		String name = sc.nextLine();
+
+		CriteriaQuery comprobarNombre = new CriteriaQuery(Usuario.class, Where.equal("nombre", name));
+		Objects<Usuario> nombre = odb.getObjects(comprobarNombre);
+
+		// Si existe el nombre que el usuario escribe
+		if (nombre.hasNext()) {
+			CriteriaQuery numeroPrestamos = new CriteriaQuery(Prestamos.class, Where.equal("Usuario.nombre", name));
+			Objects<Prestamos> listaPrestamos = odb.getObjects(numeroPrestamos);
+			System.out.println("\nPedidos de " + name + "\nElige un pedido a modificar:\n");
+
+			while (listaPrestamos.hasNext()) {
+				Prestamos p = listaPrestamos.next();
+				System.out.println("Número de pedido - " + p.getNumeroPedido());
+				listaOpciones.add(p.getNumeroPedido());
+			}
+
+			System.out.print("Introduce el número de pedido: ");
+			opcion = sc.nextInt();
+		
+			if (listaOpciones.contains(opcion)) {
+							
+				// Existe la opcion, se define opcion a cada numero de pedido 
+				
+			
+				
+			} else {
+				System.out.println("Elige una opción correcta");
+			}
+			
+
+			System.out.println("\nPrestamos modificados con éxito\n");
+		} else {
+			System.out.println("No existe esa persona\n");
+		}
+
+		odb.close();
+
 	}
 
 }

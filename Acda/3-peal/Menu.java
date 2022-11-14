@@ -13,7 +13,7 @@ public class Menu {
 	private static Statement sentencia;
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		
+
 		// Realiza la conexión con la bd mysq
 		realizarConexion();
 
@@ -37,6 +37,7 @@ public class Menu {
 				tareas.bajaUsuarios();
 				break;
 			case 4:
+				tareas.modificarPrestamo();
 				break;
 			case 5:
 				break;
@@ -56,12 +57,12 @@ public class Menu {
 
 	public static void realizarConexion() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		conexion = DriverManager.getConnection("jdbc:mysql://localhost/3evalacda", "root", "");
+		conexion = DriverManager.getConnection("jdbc:mysql://localhost/3peval", "root", "");
 		sentencia = conexion.createStatement();
-		
+
 		tareas = new Tareas(sentencia);
 	}
-	
+
 	public static void cerraConexion() {
 
 		try {
