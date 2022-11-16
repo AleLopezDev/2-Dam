@@ -1,3 +1,4 @@
+
 public class Libros {
 
 	private int codigo, numeroPaginas, year;
@@ -16,6 +17,35 @@ public class Libros {
 		this.year = year;
 		this.precioLibro = precioLibro;
 
+	}
+
+	@Override
+	public String toString() {
+		return "Codigo Libro: " + codigo;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getPrecioLibro() {
+		return precioLibro;
+	}
+
+	public void setPrecioLibro(String precioLibro) {
+		this.precioLibro = precioLibro;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
 }

@@ -1,3 +1,4 @@
+
 public class Usuario {
 
 	private int codigoUsuario;
@@ -13,6 +14,27 @@ public class Usuario {
 		this.poblacion = poblacion;
 		this.provincia = provincia;
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	@Override
+	public String toString() {
+		return "Cod: " + codigoUsuario + " - Nombre: " + nombre;
+	}
+
+	public int getCodigoUsuario() {
+		return codigoUsuario;
+	}
+
+	public void setCodigoUsuario(int codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
 	}
 
 }

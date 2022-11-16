@@ -3,8 +3,9 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import org.neodatis.odb.ODB;
@@ -12,6 +13,9 @@ import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.ObjectValues;
 import org.neodatis.odb.Objects;
 import org.neodatis.odb.Values;
+import org.neodatis.odb.core.query.IQuery;
+import org.neodatis.odb.core.query.criteria.And;
+import org.neodatis.odb.core.query.criteria.ICriterion;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 import org.neodatis.odb.impl.core.query.values.ValuesCriteriaQuery;
@@ -38,7 +42,7 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
 		if (f.exists()) {
 			f.delete();
 		}
@@ -103,7 +107,7 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
 
 		ODB odb = ODBFactory.open(f.getAbsolutePath());
 
@@ -139,7 +143,6 @@ public class Tareas {
 		System.out.println("\nLibro insertado con exito");
 
 		odb.close();
-
 	}
 	/*
 	 * Ejercicio 3 - Baja de Usuarios
@@ -153,7 +156,7 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
 		ODB odb = ODBFactory.open(f.getAbsolutePath());
 
 		System.out.println("Introduce el nombre a borrar");
@@ -169,7 +172,7 @@ public class Tareas {
 			Objects<Prestamos> listaPrestamos = odb.getObjects(borradoPrestamo);
 			while (listaPrestamos.hasNext()) {
 				Prestamos p = listaPrestamos.next();
-				//p = (Prestamos) odb.getObjects(borradoPrestamo).getFirst();
+				// p = (Prestamos) odb.getObjects(borradoPrestamo).getFirst();
 				odb.delete(p);
 			}
 
@@ -178,7 +181,7 @@ public class Tareas {
 			Objects<Usuario> listaUsuarios = odb.getObjects(borrado);
 			while (listaUsuarios.hasNext()) {
 				Usuario u = listaUsuarios.next();
-				//u = (Usuario) odb.getObjects(borrado).getFirst();
+				// u = (Usuario) odb.getObjects(borrado).getFirst();
 				odb.delete(u);
 			}
 
@@ -192,12 +195,7 @@ public class Tareas {
 	}
 
 	public void modificarPrestamo() {
-
-		// Creamos una lista de opciones para comprobar que existe la opción que elige
-		// el usuario abajo
-		ArrayList<Integer> listaOpciones = new ArrayList<>();
-		listaOpciones.clear();
-		int opcion;
+		Prestamos p = null;
 
 		// Al usar linux, pido la ruta donde quiere ser introducido el archivo
 		System.out.println("Introduce la ruta donde se encuentra bibliotecas.neo");
@@ -205,48 +203,219 @@ public class Tareas {
 
 		// Archivo donde se va guardar la biblioteca.neo
 		// File f = new File(ruta + File.separator + "biblioteca.neo");
-		File f = new File("C:\\Users\\usuario\\Documents\\Ficheros\\biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
 		ODB odb = ODBFactory.open(f.getAbsolutePath());
 
-		System.out.print("Introduce el nombre del usuario, para modificar su prestamo: ");
-		String name = sc.nextLine();
+		// Imprimimos la lista de prestamos
+		CriteriaQuery consultaPrestamos = new CriteriaQuery(Prestamos.class);
+		Objects<Prestamos> listaPrestamos = odb.getObjects(consultaPrestamos);
+		while (listaPrestamos.hasNext()) {
+			p = (Prestamos) listaPrestamos.next();
+			System.out.println(p);
+		}
 
-		CriteriaQuery comprobarNombre = new CriteriaQuery(Usuario.class, Where.equal("nombre", name));
-		Objects<Usuario> nombre = odb.getObjects(comprobarNombre);
-
-		// Si existe el nombre que el usuario escribe
-		if (nombre.hasNext()) {
-			CriteriaQuery numeroPrestamos = new CriteriaQuery(Prestamos.class, Where.equal("Usuario.nombre", name));
-			Objects<Prestamos> listaPrestamos = odb.getObjects(numeroPrestamos);
-			System.out.println("\nPedidos de " + name + "\nElige un pedido a modificar:\n");
-
-			while (listaPrestamos.hasNext()) {
-				Prestamos p = listaPrestamos.next();
-				System.out.println("Número de pedido - " + p.getNumeroPedido());
-				listaOpciones.add(p.getNumeroPedido());
-			}
-
-			System.out.print("Introduce el número de pedido: ");
-			opcion = sc.nextInt();
-		
-			if (listaOpciones.contains(opcion)) {
-							
-				// Existe la opcion, se define opcion a cada numero de pedido 
-				
-			
-				
-			} else {
-				System.out.println("Elige una opción correcta");
-			}
-			
-
-			System.out.println("\nPrestamos modificados con éxito\n");
+		// Obtenemos
+		System.out.println("Elija  prestamo: ");
+		int nPrestamo = sc.nextInt();
+		CriteriaQuery nombrePrestamo = new CriteriaQuery(Prestamos.class, Where.equal("numeroPedido", nPrestamo));
+		Objects<Prestamos> prestamoSeleccionado = odb.getObjects(nombrePrestamo);
+		if (prestamoSeleccionado.hasNext()) {
+			System.out.println("Prestamo seleccionado actualmente: " + nPrestamo);
+			p = prestamoSeleccionado.getFirst();
 		} else {
-			System.out.println("No existe esa persona\n");
+			System.out.println("No existe ese prestamo");
+		}
+
+		// Mostramos un menu con las opciones para cambiar
+		System.out.println(
+				"1 - Cambiar Usuario\n2 - Cambiar Libro\n3 - Fecha Salida\n4 - Fecha Max Devolucion\n5 - Fecha Devolucion");
+		int opcionSeleccionada = sc.nextInt();
+
+		sc.nextLine();
+		switch (opcionSeleccionada) {
+
+		case 1:
+			System.out.println("Introduce el nombre de Usuario: ");
+			String nombreUsuario = sc.nextLine();
+			CriteriaQuery consultaNombre = new CriteriaQuery(Usuario.class, Where.equal("nombre", nombreUsuario));
+			Objects<Usuario> listaUsuarios = odb.getObjects(consultaNombre);
+			while (listaUsuarios.hasNext()) {
+				Usuario u = (Usuario) listaUsuarios.next();
+				System.out.println(u);
+				p.setUsuario(u);
+				odb.store(p);
+				System.out.println("Modificacion realizada con exito");
+			}
+			break;
+		case 2:
+			System.out.println("Introduce el nombre del Libro: ");
+			String nombreLibro = sc.nextLine();
+			CriteriaQuery consultaLibro = new CriteriaQuery(Libros.class, Where.equal("nombre", nombreLibro));
+			Objects<Libros> listaLibros = odb.getObjects(consultaLibro);
+			while (listaLibros.hasNext()) {
+				Libros l = (Libros) listaLibros.next();
+				System.out.println(l);
+				p.setLibro(l);
+				odb.store(p);
+				System.out.println("Modificacion realizada con exito");
+			}
+			break;
+		case 3:
+			System.out.println("Introduce la fecha de salida nueva");
+			String fechaSalida = sc.nextLine();
+			p.setFechaSalida(fechaSalida);
+			break;
+
+		case 4:
+			System.out.println("Introduce la fecha maxima de devolucion: ");
+			String fechaMaximaDevolucion = sc.nextLine();
+			p.setFechaMaxDevolucion(fechaMaximaDevolucion);
+			break;
+		case 5:
+			System.out.println("Introduce la fecha de devolucion");
+			String fechaDevol = sc.nextLine();
+			p.setFechaMaxDevolucion(fechaDevol);
+			break;
 		}
 
 		odb.close();
-
 	}
 
+	/**
+	 * Ejercicio 5
+	 * 
+	 * @throws ParseException
+	 */
+	public static void prestamosRetraso() throws ParseException {
+		// Al usar linux, pido la ruta donde quiere ser introducido el archivo
+		System.out.println("Introduce la ruta donde se encuentra bibliotecas.neo");
+		String ruta = sc.nextLine();
+
+		// Archivo donde se va guardar la biblioteca.neo
+		// File f = new File(ruta + File.separator + "biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		ODB odb = ODBFactory.open(f.getAbsolutePath());
+
+		// Imprimir lista usuarios
+		System.out.println("Lista de usuarios: ");
+		CriteriaQuery consultaUsuario = new CriteriaQuery(Usuario.class);
+		Objects<Usuario> listaUsuarios = odb.getObjects(consultaUsuario);
+		while (listaUsuarios.hasNext()) {
+			Usuario u = listaUsuarios.next();
+			System.out.println(u);
+		}
+		System.out.println("Introduce el codigo usuario: ");
+		int codUsuario = sc.nextInt();
+
+		// Escoger Prestamo
+		CriteriaQuery consultaPrestamo = new CriteriaQuery(Prestamos.class,
+				Where.equal("Usuario.codigoUsuario", codUsuario));
+		Objects<Prestamos> listaPrestamos = odb.getObjects(consultaPrestamo);
+
+		// Comparamos si la fecha de Devolucion viene despues de la fecha maxima
+		// permitida
+		while (listaPrestamos.hasNext()) {
+			Prestamos p = (Prestamos) listaPrestamos.next();
+			Date fechaMax = new SimpleDateFormat("dd/MM/yyyy").parse(p.getFechaMaxDevolucion());
+			Date fechaDev = new SimpleDateFormat("dd/MM/yyyy").parse(p.getFechaDevolucion());
+
+			if (fechaDev.after(fechaMax)) {
+				System.out.println("El prestamo con id: " + p.getNumeroPedido() + " esta entregado con retraso ");
+			}
+		}
+		System.out.println();
+
+		odb.close();
+	}
+
+	/**
+	 * Ejercicio 6
+	 * 
+	 * @throws ParseException
+	 */
+	public static void libroGenero() throws ParseException {
+		// Al usar linux, pido la ruta donde quiere ser introducido el archivo
+		System.out.println("Introduce la ruta donde se encuentra bibliotecas.neo");
+		String ruta = sc.nextLine();
+
+		// Archivo donde se va guardar la biblioteca.neo
+		// File f = new File(ruta + File.separator + "biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		ODB odb = ODBFactory.open(f.getAbsolutePath());
+
+		System.out.println("Introduce el genero del libro: ");
+		String genero = sc.nextLine();
+
+		System.out.println("Introduce el precio tope: ");
+		double precioTope = sc.nextInt();
+
+		CriteriaQuery consultaLibro = new CriteriaQuery(Libros.class, Where.equal("genero", genero));
+		Objects<Libros> listaLibros = odb.getObjects(consultaLibro);
+
+		while (listaLibros.hasNext()) {
+			Libros l = listaLibros.next();
+			String precio = "";
+			// 2.256,00 - Caballeresco
+			// 674,00 - Novela
+			if (l.getPrecioLibro().contains(".")) {
+				precio = l.getPrecioLibro().replace(".", "");
+			} else if (l.getPrecioLibro().contains(",")) {
+				precio = l.getPrecioLibro().replace(",", ".");
+			}
+
+			if (Double.parseDouble(precio) < precioTope) {
+				System.out.println("Precio del libro: " + l.getPrecioLibro());
+				System.out.println("El libro " + l.getCodigo() + " tiene un precio inferio al tope");
+			}
+		}
+		System.out.println("\n\n");
+		sc.nextLine();
+		odb.close();
+	}
+
+	/**
+	 * @throws ParseException
+	 * 
+	 */
+	public static void prestamosRealizados() throws ParseException {
+
+
+		// Al usar linux, pido la ruta donde quiere ser introducido el archivo
+		System.out.println("Introduce la ruta donde se encuentra bibliotecas.neo");
+		String ruta = sc.nextLine();
+
+		// Archivo donde se va guardar la biblioteca.neo
+		// File f = new File(ruta + File.separator + "biblioteca.neo");
+		File f = new File("/home/alex/ficheros/biblioteca.neo");
+		ODB odb = ODBFactory.open(f.getAbsolutePath());
+
+		System.out.println("Introduce la provicia: ");
+		String provincia = sc.nextLine();
+
+		System.out.println("Introduce la fecha de inicio: ");
+		String fechaInicio = sc.nextLine();
+
+		System.out.println("Introduce la fecha de fin: ");
+		String fechaFin = sc.nextLine();
+
+		ICriterion consulta = new And().add(Where.equal("Usuario.provincia", provincia));
+
+		IQuery query = new CriteriaQuery(Prestamos.class, consulta);
+		Objects<Prestamos> lista = odb.getObjects(query);
+
+		// Parseamos a date las fechas pedidas
+		Date inicioPedida = new SimpleDateFormat("dd/MM/yyyy").parse(fechaInicio);
+		Date finPedida = new SimpleDateFormat("dd/MM/yyyy").parse(fechaFin);
+
+		while (lista.hasNext()) {
+			Prestamos p = lista.next();
+
+			Date fechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(p.getFechaSalida());
+			Date fechaDevol = new SimpleDateFormat("dd/MM/yyyy").parse(p.getFechaDevolucion());
+
+			if (inicioPedida.after(fechaSalida) && finPedida.before(fechaDevol)) {
+				System.out.println(p);
+			}
+		}
+	}
 }

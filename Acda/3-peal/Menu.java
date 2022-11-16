@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Menu {
@@ -12,7 +13,7 @@ public class Menu {
 	private static Connection conexion;
 	private static Statement sentencia;
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParseException {
 
 		// Realiza la conexión con la bd mysq
 		realizarConexion();
@@ -40,10 +41,13 @@ public class Menu {
 				tareas.modificarPrestamo();
 				break;
 			case 5:
+				tareas.prestamosRetraso();
 				break;
 			case 6:
+				tareas.libroGenero();
 				break;
 			case 7:
+				tareas.prestamosRealizados();
 				break;
 			case 9:
 				cerraConexion();
@@ -57,7 +61,7 @@ public class Menu {
 
 	public static void realizarConexion() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		conexion = DriverManager.getConnection("jdbc:mysql://localhost/3peval", "root", "");
+		conexion = DriverManager.getConnection("jdbc:mysql://localhost/biblioteca", "root", "");
 		sentencia = conexion.createStatement();
 
 		tareas = new Tareas(sentencia);
