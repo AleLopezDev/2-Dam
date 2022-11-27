@@ -1,11 +1,11 @@
 - Borrar fichero original y renombrar el segundo creado
 
-    if (!f1.delete()) {
-				System.out.println("fallo al borrar");
-			}
-			if (!f2.renameTo(f1)) {
-				System.out.println("fallo al renombrar");
-			}
+   	if (!f1.delete()) {
+		System.out.println("fallo al borrar");
+	}
+	if (!f2.renameTo(f1)) {
+		System.out.println("fallo al renombrar");
+	}
       
   
 - Usar implements serializable sobre una clase, cuando se quiere escribir en un archivo de tipo objetos
