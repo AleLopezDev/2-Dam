@@ -26,7 +26,7 @@ public class Servidor {
 
 			System.out.println("Usuario conectado");
 
-			HiloMultiServidor h = new HiloMultiServidor(tuberia, cliente);
+			HiloMultiServidor h = new HiloMultiServidor(tuberia, cliente, i);
 			Thread t = new Thread(h);
 			t.setName(String.valueOf(i));
 			t.start();
