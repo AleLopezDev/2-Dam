@@ -23,9 +23,20 @@
     
             CustomAdapter miCustomAdapter = new CustomAdapter(getApplicationContext(),arrayPanes);
             listView.setAdapter(miCustomAdapter);
-            
-            
-            
-
-
+                        
+          
 // Bundle y activitys
+    
+    1.En el androidmanifest.xml añadimos la nueva actividad
+        Intent i = new Intent(a, ClasePares.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        a.startActivity(i);
+        
+    2.Para pasar objetos usamos el bundle
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("ListaPares",  listaPares); // Enviamos arraylist<String>
+        i.putExtras(bundle);
+        
+        // Recogemos el array desde la clasePares
+        ArrayList<String> checkPares = (ArrayList<String>) getIntent().getSerializableExtra("ListaPares");
+
