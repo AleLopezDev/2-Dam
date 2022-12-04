@@ -17,4 +17,15 @@
 
 // ListView
 
+    1. Creamos nuestro CustomAdapter
+    2. Creamos el listview en una activity desde el xml, y despues creamos otro xml con la forma que va a tener el listview
+    3. Rellenamos el array de objetos a pasar 
+    
+            CustomAdapter miCustomAdapter = new CustomAdapter(getApplicationContext(),arrayPanes);
+            listView.setAdapter(miCustomAdapter);
+            
+            
+            
+
+
 // Bundle y activitys
