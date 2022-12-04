@@ -1,5 +1,18 @@
 //Spinner
 
+    Array de Objetos
+    
+    1.Rellenamos el array de objetos (en este caso panes)
+    - Pan p = new Pan(nombrePanes[i],Double.parseDouble(precioPanes[i]),(int) (Math.random()*20 + 0));
+    - arrayPanes.add(p);
+    
+    2.Seteamos el adapter
+    spinner.setAdapter(new ArrayAdapter<Pan> (this, android.R.layout.simple_spinner_dropdown_item,arrayPanes));
+    
+    Array de String
+    
+
+
 // ListView
 
 // Bundle y activitys
