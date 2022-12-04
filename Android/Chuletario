@@ -10,7 +10,9 @@
     spinner.setAdapter(new ArrayAdapter<Pan> (this, android.R.layout.simple_spinner_dropdown_item,arrayPanes));
     
     Array de String
-    
+    1.Rellenamos el array de string
+    2.Seteamose el adapter
+    spinner.setAdapter(new ArrayAdapter<String> (this, android.R.layout.simple_spinner_dropdown_item,arrayString));
 
 
 // ListView
